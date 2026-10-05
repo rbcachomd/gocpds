@@ -2845,8 +2845,8 @@ var COLDCHAIN = [
  ['Olaparib tablets','Below 30 \u00b0C','Keep in the original container. No refrigeration.']
 ];
 
-var APP_VERSION = 'v1.3';
-var APP_DATE    = '31 August 2026';
+var APP_VERSION = 'v1.4';
+var APP_DATE    = '5 October 2026';
 var APP_STAMP   = APP_VERSION + ' \u00b7 ' + APP_DATE;
 
 /* ==================================================================
@@ -5530,6 +5530,11 @@ function showPPO(){
   renderPPO();
   window.scrollTo(0,0);
 }
+function fillvw(val){
+  /* wide fill, for diagnosis and allergies — these need a full line, not a short rule */
+  if(val==null||val==='') return '<span class="fill" style="min-width:76%"></span>';
+  return '<span class="fill auto" style="min-width:76%;text-align:left;padding-left:6px">'+esc(val)+'</span>';
+}
 function fillv(val,unit){
   /* a completed value renders shaded; an empty one renders as a blank rule */
   if(val==null||val==='') return '<span class="fill lg"></span>'+(unit?' '+unit:'');
@@ -5558,6 +5563,8 @@ function renderDesensPPO(p){
     +'<div class="r"><b>Patient:</b> '+fillv(auto?v('p_name'):'')+' &nbsp;&nbsp; '
     +'<b>Hospital no.:</b> '+fillv(auto?v('p_hosp'):'')+' &nbsp;&nbsp; '
     +'<b>Cycle #:</b> '+fillv(auto?v('p_cycle'):'')+'</div>'
+    +'<div class="r"><b>Diagnosis and stage:</b> '+fillvw(auto?v('p_dx'):'')+'</div>'
+    +'<div class="r"><b>Allergies:</b> '+fillvw(auto?(v('p_allergy')||'None known'):'')+'</div>'
     +'<div class="r"><b>DATE:</b> <span class="fill lg"></span> &nbsp;&nbsp; '
     +'<b>Time started:</b> <span class="fill"></span> &nbsp;&nbsp; '
     +'<b>Time completed:</b> <span class="fill"></span></div>'
@@ -5683,6 +5690,7 @@ function renderSourcedPPO(p){
     +'<div class="r"><b>Patient:</b> '+fillv(auto?v('p_name'):'')+' &nbsp;&nbsp; '
     +'<b>Hospital no.:</b> '+fillv(auto?v('p_hosp'):'')+' &nbsp;&nbsp; '
     +'<b>Cycle #:</b> '+fillv(auto?v('p_cycle'):'')+'</div>'
+    +'<div class="r"><b>Diagnosis and stage:</b> '+fillvw(auto?v('p_dx'):'')+'</div>'
     +'<div class="r"><b>Regimen:</b> '+fillv(auto?(T[$('p_reg').value]||{label:''}).label:'')+'</div>'
     +'<div class="r"><b>Planned treatment date:</b> <span class="fill lg"></span> &nbsp;&nbsp; '
     +'<b>Actual date given:</b> <span class="fill lg"></span></div>'
@@ -5809,6 +5817,8 @@ function renderPPO(){
     +'<div class="r"><b>Patient:</b> '+fillv(auto?v('p_name'):'')+' &nbsp;&nbsp; '
     +'<b>Hospital no.:</b> '+fillv(auto?v('p_hosp'):'')+' &nbsp;&nbsp; '
     +'<b>Age/Sex:</b> '+fillv(auto?ageSex():'')+'</div>'
+    +'<div class="r"><b>Diagnosis and stage:</b> '+fillvw(auto?v('p_dx'):'')+'</div>'
+    +'<div class="r"><b>Allergies:</b> '+fillvw(auto?(v('p_allergy')||'None known'):'')+'</div>'
     +'<div class="r"><b>DATE:</b> <span class="fill lg"></span> &nbsp;&nbsp; '
     +'<b>To be given:</b> <span class="fill lg"></span> &nbsp;&nbsp; '
     +'<b>Cycle #:</b> '+fillv(auto?v('p_cycle'):'')+'</div>'
@@ -6128,7 +6138,7 @@ function renderPatient(set,l){
      console.log(h.toString(16))
    then paste the result into ACCESS_HASH below.
    ================================================================== */
-var ACCESS_HASH = 'f704fc81';          /* default code: GOCPDS2026 — CHANGE THIS BEFORE DEPLOYMENT */
+var ACCESS_HASH = 'f8ae8041';          /* default code: GOCPDS2026 — CHANGE THIS BEFORE DEPLOYMENT */
 var ROLE = 'none';
 
 function accHash(s){
